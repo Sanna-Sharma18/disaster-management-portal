@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relief Portal Login</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Relief Portal Login</h2>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" data-role="admin">Admin</button>
+        <button class="tab" data-role="user">User</button>
+        <button class="tab" data-role="volunteer">Volunteer</button>
+    </div>
+
+    <!-- Admin Form -->
+    <form class="form active" id="adminForm">
+        <input type="email" placeholder="Admin Email" required>
+        <div class="password-container">
+            <input type="password" placeholder="Password" required id="adminPass">
+            <span class="toggle" data-target="adminPass">👁</span>
+        </div>
+        <button type="submit" class="login-btn">Login as Admin</button>
+    </form>
+
+    <!-- User Form -->
+    <form class="form" id="userForm">
+        <input type="email" placeholder="User Email" required>
+        <div class="password-container">
+            <input type="password" placeholder="Password" required id="userPass">
+            <span class="toggle" data-target="userPass">👁</span>
+        </div>
+        <button type="submit" class="login-btn">Login as User</button>
+    </form>
+
+    <!-- Volunteer Login Form -->
+    <form class="form" id="volunteerForm">
+        <input type="email" placeholder="Volunteer Email" required>
+        <div class="password-container">
+            <input type="password" placeholder="Password" required id="volPass">
+            <span class="toggle" data-target="volPass">👁</span>
+        </div>
+        <button type="submit" class="login-btn">Login as Volunteer</button>
+    </form>
+
+    <!-- Volunteer Registration Form -->
+    <form class="form" id="registerForm">
+        <h3>Volunteer Registration</h3>
+
+        <input type="text" placeholder="Full Name" required>
+        <input type="number" placeholder="Age" required>
+
+        <select required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+
+        <input type="text" placeholder="Location (City/Village)" required>
+        <input type="text" placeholder="Skills (First Aid, Driving, etc.)" required>
+        <input type="email" placeholder="Email" required>
+
+        <div class="password-container">
+            <input type="password" placeholder="Create Password" required id="regPass">
+            <span class="toggle" data-target="regPass">👁</span>
+        </div>
+
+        <button type="submit" class="login-btn">Register</button>
+
+        <div class="links">
+            <a href="#" id="backToLogin">← Back to Login</a>
+        </div>
+    </form>
+
+    <div class="links">
+        <a href="#">Forgot Password?</a><br>
+        <a href="#" id="registerBtn">Register as Volunteer</a>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
