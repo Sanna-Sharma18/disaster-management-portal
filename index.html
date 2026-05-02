@@ -1,91 +1,549 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relief Portal Login</title>
-
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relief Atlas</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js for the analytics chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Phosphor Icons for elegant UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-
 <body>
 
-<div class="container">
-    <h2>Relief Portal Login</h2>
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">R</div>
+                <span>Relief Atlas</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#disasters">Disasters</a></li>
+                <li><a href="#shelters">Shelters</a></li>
+                <li><a href="#donations">Donations</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="login.html" style="color: var(--text-light);"><i class="ph ph-sign-out"></i> Sign Out</a></li>
+            </ul>
+            <a href="#" class="btn-primary">Contribute <i class="ph ph-arrow-up-right"></i></a>
+        </nav>
 
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab active" data-role="admin">Admin</button>
-        <button class="tab" data-role="user">User</button>
-        <button class="tab" data-role="volunteer">Volunteer</button>
-    </div>
-
-    <!-- Admin Form -->
-    <form class="form active" id="adminForm">
-        <input type="email" placeholder="Admin Email" required>
-        <div class="password-container">
-            <input type="password" placeholder="Password" required id="adminPass">
-            <span class="toggle" data-target="adminPass">👁</span>
+        <div class="hero-content">
+            <div class="badge">
+                <span class="dot"></span> LIVE OPERATIONAL VIEW
+            </div>
+            <h1>A clearer picture of every crisis, in one calm place.</h1>
+            <p>Relief Atlas brings together disaster events, shelter capacity, donations, and aid distribution — so responders, donors, and the public can act on the same truth.</p>
         </div>
-        <button type="submit" class="login-btn">Login as Admin</button>
-    </form>
+    </header>
 
-    <!-- User Form -->
-    <form class="form" id="userForm">
-        <input type="email" placeholder="User Email" required>
-        <div class="password-container">
-            <input type="password" placeholder="Password" required id="userPass">
-            <span class="toggle" data-target="userPass">👁</span>
+    <!-- STATS BAR -->
+    <section class="stats-bar">
+        <div class="stat-card">
+            <h2>4</h2>
+            <p>8 tracked total</p>
         </div>
-        <button type="submit" class="login-btn">Login as User</button>
-    </form>
-
-    <!-- Volunteer Login Form -->
-    <form class="form" id="volunteerForm">
-        <input type="email" placeholder="Volunteer Email" required>
-        <div class="password-container">
-            <input type="password" placeholder="Password" required id="volPass">
-            <span class="toggle" data-target="volPass">👁</span>
+        <div class="stat-card">
+            <h2>616k</h2>
+            <p>Across 6 regions</p>
         </div>
-        <button type="submit" class="login-btn">Login as Volunteer</button>
-    </form>
+        <div class="stat-card">
+            <h2>86%</h2>
+            <p>4,528 of 5,250 beds</p>
+        </div>
+        <div class="stat-card">
+            <h2>6</h2>
+            <p>5 relief drops dispatched</p>
+        </div>
+    </section>
 
-    <!-- Volunteer Registration Form -->
-    <form class="form" id="registerForm">
-        <h3>Volunteer Registration</h3>
-
-        <input type="text" placeholder="Full Name" required>
-        <input type="number" placeholder="Age" required>
-
-        <select required>
-            <option value="">Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-        </select>
-
-        <input type="text" placeholder="Location (City/Village)" required>
-        <input type="text" placeholder="Skills (First Aid, Driving, etc.)" required>
-        <input type="email" placeholder="Email" required>
-
-        <div class="password-container">
-            <input type="password" placeholder="Create Password" required id="regPass">
-            <span class="toggle" data-target="regPass">👁</span>
+    <!-- DISASTER EVENTS SECTION -->
+    <section id="disasters" class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="subheading">ACTIVE SITUATION</span>
+                <h2>Disaster events</h2>
+                <p>Curated, verified incidents across regions. Filter by hazard type or severity to focus the view.</p>
+            </div>
+            <div class="events-count"><strong>8</strong> events shown</div>
         </div>
 
-        <button type="submit" class="login-btn">Register</button>
-
-        <div class="links">
-            <a href="#" id="backToLogin">← Back to Login</a>
+        <div class="filters">
+            <div class="search-box">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" placeholder="Search by location, title, or region...">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Flood</button>
+                <button class="filter-btn">Earthquake</button>
+                <button class="filter-btn">Fire</button>
+                <button class="filter-btn">Cyclone</button>
+                <button class="filter-btn">Landslide</button>
+                <button class="filter-btn">Drought</button>
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Low</button>
+                <button class="filter-btn">Moderate</button>
+                <button class="filter-btn">High</button>
+                <button class="filter-btn">Critical</button>
+            </div>
         </div>
-    </form>
 
-    <div class="links">
-        <a href="#">Forgot Password?</a><br>
-        <a href="#" id="registerBtn">Register as Volunteer</a>
-    </div>
-</div>
+        <div class="grid disaster-grid">
+            <!-- Card 1 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-001</span>
+                        <span class="tag tag-type tag-flood">FLOOD</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-critical"><span class="dot critical"></span> CRITICAL</span>
+                        <span class="tag tag-status status-active">Active</span>
+                    </div>
+                </div>
+                <h3>Monsoon Flooding — Brahmaputra Basin</h3>
+                <p>Sustained rainfall has overwhelmed embankments along the river basin, displacing residents across 14 districts.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Guwahati, Assam</span>
+                    <span><i class="ph ph-users"></i> 1,84,000 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 22 Apr 2025</span>
+                </div>
+            </div>
 
-<script src="script.js"></script>
+            <!-- Card 2 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-002</span>
+                        <span class="tag tag-type tag-fire">FIRE</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
+                        <span class="tag tag-status status-active">Active</span>
+                    </div>
+                </div>
+                <h3>Wildfire — Sierra Nevada Foothills</h3>
+                <p>Dry winds have accelerated fire spread across 38,000 acres. Evacuation orders are in effect for three communities.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Placer County, CA</span>
+                    <span><i class="ph ph-users"></i> 12,400 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 21 Apr 2025</span>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-003</span>
+                        <span class="tag tag-type tag-earthquake">EARTHQUAKE</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
+                        <span class="tag tag-status status-contained">Contained</span>
+                    </div>
+                </div>
+                <h3>M6.4 Earthquake — Aegean Coast</h3>
+                <p>Aftershocks continue to be reported. Search-and-rescue operations have transitioned to recovery and rehousing.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> İzmir, Türkiye</span>
+                    <span><i class="ph ph-users"></i> 56,000 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 19 Apr 2025</span>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-004</span>
+                        <span class="tag tag-type tag-cyclone">CYCLONE</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-critical"><span class="dot critical"></span> CRITICAL</span>
+                        <span class="tag tag-status status-active">Active</span>
+                    </div>
+                </div>
+                <h3>Cyclone Aurelia Landfall</h3>
+                <p>Category 4 cyclone made landfall overnight. Power and communications are down across coastal districts.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Antananarivo, Madagascar</span>
+                    <span><i class="ph ph-users"></i> 92,000 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 23 Apr 2025</span>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-005</span>
+                        <span class="tag tag-type tag-landslide">LANDSLIDE</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-moderate"><span class="dot moderate"></span> MODERATE</span>
+                        <span class="tag tag-status status-monitoring">Monitoring</span>
+                    </div>
+                </div>
+                <h3>Landslide — Andean Slopes</h3>
+                <p>Saturated hillsides triggered partial slope failure. Geotechnical teams monitoring for further movement.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Medellín, Colombia</span>
+                    <span><i class="ph ph-users"></i> 3,200 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 18 Apr 2025</span>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-006</span>
+                        <span class="tag tag-type tag-drought">DROUGHT</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
+                        <span class="tag tag-status status-active">Active</span>
+                    </div>
+                </div>
+                <h3>Drought Emergency — Eastern Highlands</h3>
+                <p>Three consecutive failed rainy seasons. Water trucking operations expanding to remote pastoralist communities.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Marsabit, Kenya</span>
+                    <span><i class="ph ph-users"></i> 2,40,000 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 10 Apr 2025</span>
+                </div>
+            </div>
+            
+            <!-- Card 7 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-007</span>
+                        <span class="tag tag-type tag-flood">FLOOD</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-moderate"><span class="dot moderate"></span> MODERATE</span>
+                        <span class="tag tag-status status-contained">Contained</span>
+                    </div>
+                </div>
+                <h3>Urban Flash Flood</h3>
+                <p>Drainage overflow inundated low-lying neighborhoods. Most pumping stations restored to service.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Jakarta, Indonesia</span>
+                    <span><i class="ph ph-users"></i> 15,000 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 17 Apr 2025</span>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="card disaster-card">
+                <div class="card-header">
+                    <div class="tags-left">
+                        <span class="tag tag-id">DSR-008</span>
+                        <span class="tag tag-type tag-fire">FIRE</span>
+                    </div>
+                    <div class="tags-right">
+                        <span class="tag tag-severity tag-low"><span class="dot low"></span> LOW</span>
+                        <span class="tag tag-status status-resolved">Resolved</span>
+                    </div>
+                </div>
+                <h3>Industrial Fire</h3>
+                <p>Warehouse fire contained within 6 hours. Air quality readings have returned to baseline.</p>
+                <div class="card-meta">
+                    <span><i class="ph ph-map-pin"></i> Mumbai, India</span>
+                    <span><i class="ph ph-users"></i> 800 affected</span>
+                    <span><i class="ph ph-calendar-blank"></i> 16 Apr 2025</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SHELTER NETWORK SECTION -->
+    <section class="section bg-light">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="subheading">CAPACITY</span>
+                <h2>Shelter network</h2>
+                <p>Live occupancy and resources across registered shelters in the relief network.</p>
+            </div>
+        </div>
+
+        <div class="grid shelter-grid">
+            <!-- Shelter 1 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-full">Full</span>
+                </div>
+                <h3>Guwahati Civic Hall</h3>
+                <p class="location">Guwahati, Assam</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 1,140 / 1,200</span>
+                        <span class="percentage">95%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-red" style="width: 95%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water</span>
+                    <span class="res-tag">Hot meals</span>
+                    <span class="res-tag">Medical</span>
+                    <span class="res-tag">Bedding</span>
+                </div>
+            </div>
+
+            <!-- Shelter 2 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-open">Open</span>
+                </div>
+                <h3>Roseville Community Gym</h3>
+                <p class="location">Placer County, CA</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 312 / 600</span>
+                        <span class="percentage">52%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-green" style="width: 52%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water</span>
+                    <span class="res-tag">Cots</span>
+                    <span class="res-tag">Pet care</span>
+                </div>
+            </div>
+
+            <!-- Shelter 3 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-open">Open</span>
+                </div>
+                <h3>İzmir Karşıyaka Sports Center</h3>
+                <p class="location">İzmir, Türkiye</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 780 / 900</span>
+                        <span class="percentage">87%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-yellow" style="width: 87%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water</span>
+                    <span class="res-tag">Meals</span>
+                    <span class="res-tag">Medical</span>
+                    <span class="res-tag">Translation</span>
+                </div>
+            </div>
+
+            <!-- Shelter 4 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-full">Full</span>
+                </div>
+                <h3>Antananarivo Stadium Annex</h3>
+                <p class="location">Antananarivo, Madagascar</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 1,800 / 1,800</span>
+                        <span class="percentage">100%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-red" style="width: 100%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water</span>
+                    <span class="res-tag">Meals</span>
+                    <span class="res-tag">Sanitation</span>
+                </div>
+            </div>
+
+            <!-- Shelter 5 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-open">Open</span>
+                </div>
+                <h3>San Javier Parish Hall</h3>
+                <p class="location">Medellín, Colombia</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 86 / 250</span>
+                        <span class="percentage">34%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-green" style="width: 34%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water</span>
+                    <span class="res-tag">Bedding</span>
+                    <span class="res-tag">Childcare</span>
+                </div>
+            </div>
+
+            <!-- Shelter 6 -->
+            <div class="card shelter-card">
+                <div class="card-header">
+                    <div class="icon-circle"><i class="ph ph-house"></i></div>
+                    <span class="tag status-open">Open</span>
+                </div>
+                <h3>Marsabit Mission School</h3>
+                <p class="location">Marsabit, Kenya</p>
+                <div class="occupancy">
+                    <div class="occ-text">
+                        <span><i class="ph ph-users"></i> 410 / 500</span>
+                        <span class="percentage">82%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress fill-yellow" style="width: 82%;"></div></div>
+                </div>
+                <div class="resources">
+                    <span class="res-tag">Water trucking</span>
+                    <span class="res-tag">Nutrition</span>
+                    <span class="res-tag">Medical</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REPORTS & ANALYTICS SECTION -->
+    <section id="reports" class="section bg-light section-bottom">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="subheading">LAST 7 DAYS</span>
+                <h2>Reports & analytics</h2>
+                <p>A weekly view of incidents, contributions, and aid delivered into the field.</p>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="chart-container card">
+                <div class="chart-header">
+                    <h3>Activity trend</h3>
+                    <div class="legend">
+                        <span><div class="dot chart-disasters"></div> Disasters</span>
+                        <span><div class="dot chart-donations"></div> Donations</span>
+                        <span><div class="dot chart-relief"></div> Relief</span>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="donations-container card">
+                <div class="donations-header">
+                    <div class="icon-circle orange-light"><i class="ph ph-hands-clapping"></i></div>
+                    <h3>Recent donations</h3>
+                </div>
+                <ul class="donation-list">
+                    <li>
+                        <div class="donation-info">
+                            <strong>Helios Foundation</strong>
+                            <span>MONEY · 2025-04-23</span>
+                        </div>
+                        <div class="donation-amount green">$250,000</div>
+                    </li>
+                    <li>
+                        <div class="donation-info">
+                            <strong>Anonymous</strong>
+                            <span>MONEY · 2025-04-23</span>
+                        </div>
+                        <div class="donation-amount green">$12,000</div>
+                    </li>
+                    <li>
+                        <div class="donation-info">
+                            <strong>MedSupply Coop</strong>
+                            <span>MEDICAL · 2025-04-22</span>
+                        </div>
+                        <div class="donation-amount">4,200 units</div>
+                    </li>
+                    <li>
+                        <div class="donation-info">
+                            <strong>Northwind Logistics</strong>
+                            <span>WATER · 2025-04-22</span>
+                        </div>
+                        <div class="donation-amount">18,000 L</div>
+                    </li>
+                    <li>
+                        <div class="donation-info">
+                            <strong>Cedar Bakery Network</strong>
+                            <span>FOOD · 2025-04-21</span>
+                        </div>
+                        <div class="donation-amount">9,800 meals</div>
+                    </li>
+                    <li>
+                        <div class="donation-info">
+                            <strong>Civic Volunteers Union</strong>
+                            <span>CLOTHING · 2025-04-20</span>
+                        </div>
+                        <div class="donation-amount">3,100 items</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="log-container card span-full">
+                <div class="log-header">
+                    <div class="icon-circle green-light"><i class="ph ph-package"></i></div>
+                    <h3>Relief distribution log</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="log-table">
+                        <thead>
+                            <tr>
+                                <th>REF</th>
+                                <th>SHELTER</th>
+                                <th>CATEGORY</th>
+                                <th>UNITS</th>
+                                <th>DATE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DX-501</td>
+                                <td>Guwahati Civic Hall</td>
+                                <td>Hot meals</td>
+                                <td><strong>3,400</strong></td>
+                                <td>2025-04-23</td>
+                            </tr>
+                            <tr>
+                                <td>DX-502</td>
+                                <td>Antananarivo Stadium Annex</td>
+                                <td>Drinking water (L)</td>
+                                <td><strong>12,000</strong></td>
+                                <td>2025-04-23</td>
+                            </tr>
+                            <tr>
+                                <td>DX-503</td>
+                                <td>İzmir Karşıyaka Sports Center</td>
+                                <td>Medical kits</td>
+                                <td><strong>480</strong></td>
+                                <td>2025-04-22</td>
+                            </tr>
+                            <tr>
+                                <td>DX-504</td>
+                                <td>Marsabit Mission School</td>
+                                <td>Nutrition packs</td>
+                                <td><strong>1,600</strong></td>
+                                <td>2025-04-22</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Relief Atlas</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="login-page">
+
+    <div class="login-container">
+        <!-- Left Image Panel -->
+        <div class="login-image-panel">
+            <div class="overlay"></div>
+            <div class="panel-content">
+                <h2>Coordinate.<br>Respond.<br>Recover.</h2>
+                <p>Access the unified dashboard for disaster management, aid tracking, and resource allocation.</p>
+            </div>
+        </div>
+
+        <!-- Right Form Panel -->
+        <div class="login-form-panel">
+            <div class="login-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">R</div>
+                    <span>Relief Atlas</span>
+                </a>
+            </div>
+
+            <div class="form-wrapper">
+                <h3>Welcome back</h3>
+                <p class="subtitle">Please select your role and log in.</p>
+
+                <!-- Role Toggle Tabs -->
+                <div class="role-tabs">
+                    <button class="tab-btn active" data-target="user-form">
+                        <i class="ph ph-user"></i> Public User
+                    </button>
+                    <button class="tab-btn" data-target="admin-form">
+                        <i class="ph ph-shield-check"></i> Responder / Admin
+                    </button>
+                </div>
+
+                <!-- User Login Form -->
+                <form id="user-form" class="auth-form active-form">
+                    <div class="input-group">
+                        <label for="user-email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-envelope"></i>
+                            <input type="email" id="user-email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="user-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-lock-key"></i>
+                            <input type="password" id="user-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <label class="remember-me">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-primary w-100">Log In</button>
+                    <p class="switch-auth">Don't have an account? <a href="#">Sign up</a></p>
+                </form>
+
+                <!-- Admin Login Form -->
+                <form id="admin-form" class="auth-form">
+                    <div class="input-group">
+                        <label for="admin-id">Official ID / Email</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-identification-badge"></i>
+                            <input type="text" id="admin-id" placeholder="Agency ID or Official Email" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="admin-password">Secure Password</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-lock-key"></i>
+                            <input type="password" id="admin-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="auth-token">2FA Token</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-device-mobile"></i>
+                            <input type="text" id="auth-token" placeholder="6-digit code" pattern="[0-9]{6}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-100 admin-btn">Access Secure Portal <i class="ph ph-arrow-right"></i></button>
+                    <p class="security-notice"><i class="ph ph-lock"></i> Authorized personnel only. All access is logged.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

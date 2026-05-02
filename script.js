@@ -1,97 +1,116 @@
-const tabs = document.querySelectorAll(".tab");
-const forms = document.querySelectorAll(".form");
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Chart.js for Activity Trend
+    const ctx = document.getElementById('activityChart').getContext('2d');
 
-const registerBtn = document.getElementById("registerBtn");
-const backBtn = document.getElementById("backToLogin");
-const registerForm = document.getElementById("registerForm");
+    // Gradient for Donations (Orange)
+    const gradientOrange = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientOrange.addColorStop(0, 'rgba(249, 115, 22, 0.2)');
+    gradientOrange.addColorStop(1, 'rgba(249, 115, 22, 0)');
 
-// Switch Tabs
-tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        forms.forEach(f => f.classList.remove("active"));
+    // Gradient for Relief (Green)
+    const gradientGreen = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientGreen.addColorStop(0, 'rgba(34, 197, 94, 0.2)');
+    gradientGreen.addColorStop(1, 'rgba(34, 197, 94, 0)');
 
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.role + "Form").classList.add("active");
-    });
-});
-
-// Toggle Password
-document.querySelectorAll(".toggle").forEach(icon => {
-    icon.addEventListener("click", () => {
-        const input = document.getElementById(icon.dataset.target);
-        input.type = input.type === "password" ? "text" : "password";
-    });
-});
-
-// Login Forms
-document.querySelectorAll("form").forEach(form => {
-    if (form.id !== "registerForm") {
-        form.addEventListener("submit", e => {
-            e.preventDefault();
-
-            const email = form.querySelector("input[type='email']").value;
-            const password = form.querySelector("input[type='password']").value;
-
-            if (!email || !password) {
-                alert("Please fill all fields");
-                return;
+    const activityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Apr 17', 'Apr 18', 'Apr 19', 'Apr 20', 'Apr 21', 'Apr 22', 'Apr 23'],
+            datasets: [
+                {
+                    label: 'Donations',
+                    data: [38, 45, 55, 65, 80, 95, 110],
+                    borderColor: '#f97316', // orange
+                    backgroundColor: gradientOrange,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                },
+                {
+                    label: 'Relief',
+                    data: [22, 30, 40, 50, 60, 72, 80],
+                    borderColor: '#22c55e', // green
+                    backgroundColor: gradientGreen,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                },
+                {
+                    label: 'Disasters',
+                    data: [5, 6, 5, 7, 6, 8, 8],
+                    borderColor: '#1c5253', // teal
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false // We built a custom HTML legend
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#1e293b',
+                    titleFont: { family: 'Inter', size: 13 },
+                    bodyFont: { family: 'Inter', size: 13 },
+                    padding: 12,
+                    cornerRadius: 8,
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { family: 'Inter', size: 12 }
+                    }
+                },
+                y: {
+                    min: 0,
+                    max: 120,
+                    ticks: {
+                        stepSize: 30,
+                        color: '#94a3b8',
+                        font: { family: 'Inter', size: 12 }
+                    },
+                    grid: {
+                        color: '#e2e8f0',
+                        borderDash: [5, 5],
+                        drawBorder: false
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
             }
-
-            if (!email.includes("@")) {
-                alert("Enter valid email");
-                return;
-            }
-
-            if (form.id === "adminForm") {
-                alert("Redirecting to Admin Dashboard...");
-            } 
-            else if (form.id === "userForm") {
-                alert("Redirecting to User Home...");
-            } 
-            else {
-                alert("Redirecting to Volunteer Dashboard...");
-            }
-        });
-    }
-});
-
-// Open Registration
-registerBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    tabs.forEach(t => t.classList.remove("active"));
-    forms.forEach(f => f.classList.remove("active"));
-
-    registerForm.classList.add("active");
-});
-
-// Back to Login
-backBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    forms.forEach(f => f.classList.remove("active"));
-    tabs[2].classList.add("active");
-
-    document.getElementById("volunteerForm").classList.add("active");
-});
-
-// Register Submit
-registerForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const inputs = registerForm.querySelectorAll("input, select");
-
-    for (let input of inputs) {
-        if (!input.value) {
-            alert("Please fill all fields");
-            return;
         }
-    }
+    });
 
-    alert("Registration Successful!");
-
-    registerForm.classList.remove("active");
-    document.getElementById("volunteerForm").classList.add("active");
-    tabs[2].classList.add("active");
+    // 2. Simple Filter Button Toggle (Visual Only)
+    const filterGroups = document.querySelectorAll('.filter-group');
+    
+    filterGroups.forEach(group => {
+        const buttons = group.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons in this group
+                buttons.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+            });
+        });
+    });
 });
