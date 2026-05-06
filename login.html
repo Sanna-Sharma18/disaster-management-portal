@@ -4,106 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Relief Atlas</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="login.css">
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body class="login-page">
 
-    <div class="login-container">
-        <!-- Left Image Panel -->
-        <div class="login-image-panel">
-            <div class="overlay"></div>
-            <div class="panel-content">
-                <h2>Coordinate.<br>Respond.<br>Recover.</h2>
-                <p>Access the unified dashboard for disaster management, aid tracking, and resource allocation.</p>
-            </div>
-        </div>
+<div class="login-container">
 
-        <!-- Right Form Panel -->
-        <div class="login-form-panel">
-            <div class="login-header">
-                <a href="index.html" class="logo">
-                    <div class="logo-icon">R</div>
-                    <span>Relief Atlas</span>
-                </a>
-            </div>
-
-            <div class="form-wrapper">
-                <h3>Welcome back</h3>
-                <p class="subtitle">Please select your role and log in.</p>
-
-                <!-- Role Toggle Tabs -->
-                <div class="role-tabs">
-                    <button class="tab-btn active" data-target="user-form">
-                        <i class="ph ph-user"></i> Public User
-                    </button>
-                    <button class="tab-btn" data-target="admin-form">
-                        <i class="ph ph-shield-check"></i> Responder / Admin
-                    </button>
-                </div>
-
-                <!-- User Login Form -->
-                <form id="user-form" class="auth-form active-form">
-                    <div class="input-group">
-                        <label for="user-email">Email Address</label>
-                        <div class="input-with-icon">
-                            <i class="ph ph-envelope"></i>
-                            <input type="email" id="user-email" placeholder="john@example.com" required>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="user-password">Password</label>
-                        <div class="input-with-icon">
-                            <i class="ph ph-lock-key"></i>
-                            <input type="password" id="user-password" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <label class="remember-me">
-                            <input type="checkbox"> Remember me
-                        </label>
-                        <a href="#" class="forgot-password">Forgot password?</a>
-                    </div>
-                    <button type="submit" class="btn-primary w-100">Log In</button>
-                    <p class="switch-auth">Don't have an account? <a href="#">Sign up</a></p>
-                </form>
-
-                <!-- Admin Login Form -->
-                <form id="admin-form" class="auth-form">
-                    <div class="input-group">
-                        <label for="admin-id">Official ID / Email</label>
-                        <div class="input-with-icon">
-                            <i class="ph ph-identification-badge"></i>
-                            <input type="text" id="admin-id" placeholder="Agency ID or Official Email" required>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="admin-password">Secure Password</label>
-                        <div class="input-with-icon">
-                            <i class="ph ph-lock-key"></i>
-                            <input type="password" id="admin-password" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="auth-token">2FA Token</label>
-                        <div class="input-with-icon">
-                            <i class="ph ph-device-mobile"></i>
-                            <input type="text" id="auth-token" placeholder="6-digit code" pattern="[0-9]{6}">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary w-100 admin-btn">Access Secure Portal <i class="ph ph-arrow-right"></i></button>
-                    <p class="security-notice"><i class="ph ph-lock"></i> Authorized personnel only. All access is logged.</p>
-                </form>
-            </div>
+    <!-- Left Image Panel -->
+    <div class="login-image-panel">
+        <div class="overlay"></div>
+        <div class="panel-content">
+            <h2>Coordinate.<br>Respond.<br>Recover.</h2>
+            <p>Access the unified dashboard for disaster management, aid tracking, and resource allocation.</p>
         </div>
     </div>
 
-    <script src="login.js"></script>
+    <!-- Right Form Panel -->
+    <div class="login-form-panel">
+        <div class="login-header">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">R</div>
+                <span>Relief Atlas</span>
+            </a>
+        </div>
+
+        <div class="form-wrapper">
+
+            <!-- Error / Success banner -->
+            <div id="auth-message" class="auth-message hidden"></div>
+
+            <!-- Role Tabs: User | Admin -->
+            <div class="role-tabs">
+                <button class="tab-btn active" data-role="user">
+                    <i class="ph ph-user"></i> Public User
+                </button>
+                <button class="tab-btn" data-role="admin">
+                    <i class="ph ph-shield-check"></i> Admin
+                </button>
+            </div>
+
+            <!-- ══════════════ USER PANEL ══════════════ -->
+            <div id="panel-user" class="role-panel">
+
+                <!-- Sign In / Sign Up inner tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" data-panel="user" data-view="signin">Sign In</button>
+                    <button class="auth-tab-btn"        data-panel="user" data-view="signup">Sign Up</button>
+                </div>
+
+                <!-- User Sign In -->
+                <div id="user-signin" class="auth-view active-view">
+                    <p class="subtitle">Welcome back! Sign in to your account.</p>
+                    <form id="user-signin-form" novalidate>
+                        <div class="input-group">
+                            <label for="us-email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-envelope"></i>
+                                <input type="email" id="us-email" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="us-password">Password</label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-lock-key"></i>
+                                <input type="password" id="us-password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary w-100" id="user-signin-btn">Sign In</button>
+                        <p class="switch-auth">
+                            Don't have an account?
+                            <a href="#" class="auth-tab-link" data-panel="user" data-view="signup">Sign up</a>
+                        </p>
+                    </form>
+                </div>
+
+                <!-- User Sign Up -->
+                <div id="user-signup" class="auth-view">
+                    <p class="subtitle">Create your account to get started.</p>
+                    <form id="user-signup-form" novalidate>
+                        <div class="input-group">
+                            <label for="up-name">Full Name</label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-user-circle"></i>
+                                <input type="text" id="up-name" placeholder="Your full name" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="up-email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-envelope"></i>
+                                <input type="email" id="up-email" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="up-phone">Phone <span class="optional">(optional)</span></label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-phone"></i>
+                                <input type="tel" id="up-phone" placeholder="+1 555 000 0000">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="up-password">Password</label>
+                            <div class="input-with-icon">
+                                <i class="ph ph-lock-key"></i>
+                                <input type="password" id="up-password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary w-100" id="user-signup-btn">Create Account</button>
+                        <p class="switch-auth">
+                            Already have an account?
+                            <a href="#" class="auth-tab-link" data-panel="user" data-view="signin">Sign in</a>
+                        </p>
+                    </form>
+                </div>
+
+            </div><!-- /panel-user -->
+
+            <!-- ══════════════ ADMIN PANEL ══════════════ -->
+            <div id="panel-admin" class="role-panel hidden">
+
+                <h3>Admin Portal</h3>
+                <p class="subtitle">Sign in with your admin credentials. Access is restricted to authorised personnel only.</p>
+
+                <form id="admin-signin-form" novalidate>
+                    <div class="input-group">
+                        <label for="ad-email">Admin Email</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-identification-badge"></i>
+                            <input type="email" id="ad-email" placeholder="admin@relief.org" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="ad-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="ph ph-lock-key"></i>
+                            <input type="password" id="ad-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-100 admin-btn" id="admin-signin-btn">
+                        Access Portal <i class="ph ph-arrow-right"></i>
+                    </button>
+                    <p class="security-notice">
+                        <i class="ph ph-lock"></i> Authorised personnel only. All access is logged.
+                    </p>
+                </form>
+
+            </div><!-- /panel-admin -->
+
+        </div><!-- /form-wrapper -->
+    </div><!-- /login-form-panel -->
+</div><!-- /login-container -->
+
+<script src="login.js"></script>
 </body>
 </html>

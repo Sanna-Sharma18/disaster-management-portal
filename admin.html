@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Relief Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="admin-page">
+
+    <header class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <div style="display:flex;gap:12px;align-items:center;">
+            <a href="data.html" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);padding:8px 18px;border-radius:8px;font-size:0.875rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;transition:background 0.2s;">
+                <i class="ph ph-table"></i> View Data
+            </a>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+    </header>
+
+    <div id="admin-msg" class="admin-msg hidden"></div>
+
+    <main class="admin-main">
+
+        <!-- ── Add Records Cards ── -->
+        <div class="admin-cards">
+
+            <!-- Disaster -->
+            <div class="admin-card">
+                <h2>Disaster</h2>
+                <form id="disaster-form">
+                    <div class="field-group">
+                        <label>Disaster ID</label>
+                        <input type="text" id="d-id-display" placeholder="Auto-generated" readonly class="readonly-field">
+                    </div>
+                    <div class="field-group">
+                        <label>Name</label>
+                        <input type="text" id="d-name" placeholder="Name" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Type</label>
+                        <input type="text" id="d-type" placeholder="e.g. Flood, Fire">
+                    </div>
+                    <div class="field-group">
+                        <label>Start Date</label>
+                        <input type="date" id="d-date">
+                    </div>
+                    <div class="field-group">
+                        <label>Status</label>
+                        <select id="d-status">
+                            <option value="Active">Active</option>
+                            <option value="Contained">Contained</option>
+                            <option value="Monitoring">Monitoring</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="add-btn">Add</button>
+                </form>
+            </div>
+
+            <!-- Affected Area -->
+            <div class="admin-card">
+                <h2>Affected Area</h2>
+                <form id="area-form">
+                    <div class="field-group">
+                        <label>Area ID</label>
+                        <input type="text" id="a-id-display" placeholder="Auto-generated" readonly class="readonly-field">
+                    </div>
+                    <div class="field-group">
+                        <label>Area Name</label>
+                        <input type="text" id="a-name" placeholder="Area" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Severity</label>
+                        <select id="a-severity">
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Population</label>
+                        <input type="number" id="a-population" placeholder="Population" min="0">
+                    </div>
+                    <div class="field-group">
+                        <label>Disaster</label>
+                        <select id="a-disaster-id" required>
+                            <option value="">— select disaster —</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="add-btn">Add</button>
+                </form>
+            </div>
+
+            <!-- Shelter -->
+            <div class="admin-card">
+                <h2>Shelter</h2>
+                <form id="shelter-form">
+                    <div class="field-group">
+                        <label>Shelter ID</label>
+                        <input type="text" id="s-id-display" placeholder="Auto-generated" readonly class="readonly-field">
+                    </div>
+                    <div class="field-group">
+                        <label>Name</label>
+                        <input type="text" id="s-name" placeholder="Name" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Location</label>
+                        <input type="text" id="s-location" placeholder="Location">
+                    </div>
+                    <div class="field-group">
+                        <label>Capacity</label>
+                        <input type="number" id="s-capacity" placeholder="Capacity" min="0">
+                    </div>
+                    <div class="field-group">
+                        <label>Occupied</label>
+                        <input type="number" id="s-occupied" placeholder="Occupied" min="0" value="0">
+                    </div>
+                    <div class="field-group">
+                        <label>Contact</label>
+                        <input type="text" id="s-contact" placeholder="Contact Number">
+                    </div>
+                    <div class="field-group">
+                        <label>Area</label>
+                        <select id="s-area-id" required>
+                            <option value="">— select area —</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="add-btn">Add</button>
+                </form>
+            </div>
+
+            <!-- Distribution -->
+            <div class="admin-card">
+                <h2>Distribution</h2>
+                <form id="dist-form">
+                    <div class="field-group">
+                        <label>Distribution ID</label>
+                        <input type="text" id="dist-id-display" placeholder="Auto-generated" readonly class="readonly-field">
+                    </div>
+                    <div class="field-group">
+                        <label>Resource</label>
+                        <input type="text" id="dist-material" placeholder="Resource name" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Quantity</label>
+                        <input type="number" id="dist-qty" placeholder="Quantity" min="1">
+                    </div>
+                    <div class="field-group">
+                        <label>Area</label>
+                        <select id="dist-area-id" required>
+                            <option value="">— select area —</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="add-btn">Add</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- ── User Contributions Table ── -->
+        <div class="admin-table-section">
+            <div class="table-title-row">
+                <h2>User Contributions</h2>
+                <button onclick="loadDonations()" class="refresh-btn"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+            </div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donations-tbody">
+                        <tr><td colspan="5" class="table-empty">Loading…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>

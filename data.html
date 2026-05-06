@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data View — Relief Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #f1f5f9; font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+        .data-header {
+            background: linear-gradient(to right, #0f3c3a, #1c6460);
+            color: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .data-header h1 { font-size: 1.3rem; font-weight: 700; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+
+        .back-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+
+        .export-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .export-btn:hover { background: #059669; }
+
+        .refresh-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .refresh-btn:hover { background: rgba(255,255,255,0.15); }
+
+        .data-main { padding: 28px 32px 48px; max-width: 1500px; margin: 0 auto; }
+
+        .table-section {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+        .table-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .table-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .icon-teal   { background: #f0fdfa; color: #0f766e; }
+        .icon-orange { background: #fff7ed; color: #ea580c; }
+        .icon-blue   { background: #eff6ff; color: #2563eb; }
+        .icon-purple { background: #faf5ff; color: #7c3aed; }
+
+        .table-section h2 { font-size: 1rem; font-weight: 700; color: #1e293b; }
+        .row-count { font-size: 0.8rem; color: #94a3b8; margin-left: auto; }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        thead th {
+            text-align: left;
+            padding: 8px 14px;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            white-space: nowrap;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: #f8fafc; }
+        .empty-row td { text-align: center; color: #94a3b8; padding: 28px !important; }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .tag-active    { background: #dcfce7; color: #15803d; }
+        .tag-contained { background: #fef9c3; color: #854d0e; }
+        .tag-resolved  { background: #f1f5f9; color: #475569; }
+        .tag-monitoring{ background: #eff6ff; color: #1d4ed8; }
+        .tag-critical  { background: #fee2e2; color: #dc2626; }
+        .tag-high      { background: #ffedd5; color: #c2410c; }
+        .tag-moderate  { background: #fef9c3; color: #854d0e; }
+        .tag-low       { background: #f0fdf4; color: #15803d; }
+
+        .del-btn {
+            background: none;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.15s, color 0.15s;
+        }
+        .del-btn:hover { background: #fee2e2; }
+
+        /* confirm overlay */
+        .confirm-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-overlay.show { display: flex; }
+        .confirm-box {
+            background: white;
+            border-radius: 14px;
+            padding: 28px 32px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+        .confirm-box h3 { font-size: 1rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
+        .confirm-box p  { font-size: 0.875rem; color: #64748b; margin-bottom: 24px; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+        .confirm-cancel {
+            background: #f1f5f9; color: #475569; border: none;
+            padding: 9px 22px; border-radius: 8px; font-size: 0.875rem;
+            font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+        }
+        .confirm-cancel:hover { background: #e2e8f0; }
+        .confirm-delete {
+            background: #ef4444; color: white; border: none;
+            padding: 9px 22px; border-radius: 8px; font-size: 0.875rem;
+            font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+        }
+        .confirm-delete:hover { background: #dc2626; }
+
+        @media (max-width: 640px) {
+            .data-main { padding: 16px; }
+            .data-header { padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="data-header">
+    <h1><i class="ph ph-table"></i> &nbsp;Database View</h1>
+    <div class="header-actions">
+        <button onclick="loadAll()" class="refresh-btn"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+        <button onclick="exportExcel()" class="export-btn"><i class="ph ph-file-xls"></i> Export to Excel</button>
+        <a href="admin.html" class="back-btn"><i class="ph ph-arrow-left"></i> Back</a>
+    </div>
+</header>
+
+<main class="data-main">
+
+    <!-- Disasters -->
+    <div class="table-section">
+        <div class="table-section-header">
+            <div class="table-icon icon-teal"><i class="ph ph-warning-circle"></i></div>
+            <h2>Disasters</h2>
+            <span class="row-count" id="count-disasters"></span>
+        </div>
+        <div class="table-responsive">
+            <table id="tbl-disasters">
+                <thead><tr>
+                    <th>Disaster ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr></thead>
+                <tbody><tr class="empty-row"><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Affected Areas -->
+    <div class="table-section">
+        <div class="table-section-header">
+            <div class="table-icon icon-orange"><i class="ph ph-map-pin"></i></div>
+            <h2>Affected Areas</h2>
+            <span class="row-count" id="count-areas"></span>
+        </div>
+        <div class="table-responsive">
+            <table id="tbl-areas">
+                <thead><tr>
+                    <th>Area ID</th>
+                    <th>Area Name</th>
+                    <th>Severity</th>
+                    <th>Population</th>
+                    <th>Disaster ID</th>
+                    <th></th>
+                </tr></thead>
+                <tbody><tr class="empty-row"><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Shelters -->
+    <div class="table-section">
+        <div class="table-section-header">
+            <div class="table-icon icon-blue"><i class="ph ph-house"></i></div>
+            <h2>Shelters</h2>
+            <span class="row-count" id="count-shelters"></span>
+        </div>
+        <div class="table-responsive">
+            <table id="tbl-shelters">
+                <thead><tr>
+                    <th>Shelter ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Capacity</th>
+                    <th>Occupied</th>
+                    <th>Contact</th>
+                    <th>Area ID</th>
+                    <th></th>
+                </tr></thead>
+                <tbody><tr class="empty-row"><td colspan="8">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Distributions -->
+    <div class="table-section">
+        <div class="table-section-header">
+            <div class="table-icon icon-purple"><i class="ph ph-package"></i></div>
+            <h2>Distributions</h2>
+            <span class="row-count" id="count-distributions"></span>
+        </div>
+        <div class="table-responsive">
+            <table id="tbl-distributions">
+                <thead><tr>
+                    <th>Distribution ID</th>
+                    <th>Resource</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Area ID</th>
+                    <th>Admin ID</th>
+                    <th></th>
+                </tr></thead>
+                <tbody><tr class="empty-row"><td colspan="7">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<!-- Confirm delete modal -->
+<div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+        <h3>Delete this record?</h3>
+        <p id="confirm-msg">This action cannot be undone.</p>
+        <div class="confirm-actions">
+            <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+            <button class="confirm-delete" id="confirm-ok">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080';
+
+// Auth guard
+const _stored = localStorage.getItem('relief_user');
+const _role   = localStorage.getItem('relief_user_role');
+if (!_stored || _role !== 'admin') window.location.href = 'login.html';
+
+function fmt(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function statusTag(s) {
+    const map = { active:'tag-active', contained:'tag-contained', resolved:'tag-resolved', monitoring:'tag-monitoring' };
+    const cls = map[(s||'').toLowerCase()] || 'tag-active';
+    return `<span class="tag ${cls}">${s || '—'}</span>`;
+}
+
+function sevTag(s) {
+    const map = { critical:'tag-critical', high:'tag-high', moderate:'tag-moderate', low:'tag-low' };
+    const cls = map[(s||'').toLowerCase()] || 'tag-low';
+    return `<span class="tag ${cls}">${s || '—'}</span>`;
+}
+
+function setBody(tableId, html) {
+    document.querySelector(`#${tableId} tbody`).innerHTML = html;
+}
+
+function setCount(id, n) {
+    document.getElementById(id).textContent = `${n} record${n !== 1 ? 's' : ''}`;
+}
+
+let _data = { disasters: [], areas: [], shelters: [], distributions: [] };
+
+async function loadAll() {
+    try {
+        const [disasters, areas, shelters, distributions] = await Promise.all([
+            fetch(`${API}/api/disasters`).then(r => r.json()),
+            fetch(`${API}/api/areas`).then(r => r.json()),
+            fetch(`${API}/api/shelters`).then(r => r.json()),
+            fetch(`${API}/api/distributions`).then(r => r.json())
+        ]);
+
+        _data.disasters     = disasters     || [];
+        _data.areas         = areas         || [];
+        _data.shelters      = shelters      || [];
+        _data.distributions = distributions || [];
+
+        renderDisasters(_data.disasters);
+        renderAreas(_data.areas);
+        renderShelters(_data.shelters);
+        renderDistributions(_data.distributions);
+    } catch {
+        ['tbl-disasters','tbl-areas','tbl-shelters','tbl-distributions'].forEach(id => {
+            setBody(id, `<tr class="empty-row"><td colspan="8">Failed to load — is the backend running?</td></tr>`);
+        });
+    }
+}
+
+function delBtn(onclick) {
+    return `<td><button class="del-btn" onclick="${onclick}"><i class="ph ph-trash"></i> Delete</button></td>`;
+}
+
+function renderDisasters(rows) {
+    setCount('count-disasters', rows.length);
+    if (!rows.length) { setBody('tbl-disasters', `<tr class="empty-row"><td colspan="6">No records</td></tr>`); return; }
+    setBody('tbl-disasters', rows.map(d => `<tr>
+        <td><strong>DSR-${String(d.disaster_id).padStart(3,'0')}</strong></td>
+        <td>${d.disaster_name || '—'}</td>
+        <td>${d.disaster_type || '—'}</td>
+        <td>${fmt(d.start_date)}</td>
+        <td>${statusTag(d.status)}</td>
+        ${delBtn(`confirmDelete('disaster',${d.disaster_id},'${(d.disaster_name||'').replace(/'/g,"\\'")}' )`)}
+    </tr>`).join(''));
+}
+
+function renderAreas(rows) {
+    setCount('count-areas', rows.length);
+    if (!rows.length) { setBody('tbl-areas', `<tr class="empty-row"><td colspan="6">No records</td></tr>`); return; }
+    setBody('tbl-areas', rows.map(a => `<tr>
+        <td><strong>${a.area_id}</strong></td>
+        <td>${a.area_name || '—'}</td>
+        <td>${sevTag(a.severity)}</td>
+        <td>${(a.population || 0).toLocaleString()}</td>
+        <td>${a.disaster_id || '—'}</td>
+        ${delBtn(`confirmDelete('area',${a.area_id},'${(a.area_name||'').replace(/'/g,"\\'")}' )`)}
+    </tr>`).join(''));
+}
+
+function renderShelters(rows) {
+    setCount('count-shelters', rows.length);
+    if (!rows.length) { setBody('tbl-shelters', `<tr class="empty-row"><td colspan="8">No records</td></tr>`); return; }
+    setBody('tbl-shelters', rows.map(s => {
+        const pct = s.capacity ? Math.round((s.occupied_number / s.capacity) * 100) : 0;
+        return `<tr>
+            <td><strong>${s.shelter_id}</strong></td>
+            <td>${s.shelter_name || '—'}</td>
+            <td>${s.location || '—'}</td>
+            <td>${(s.capacity || 0).toLocaleString()}</td>
+            <td>${(s.occupied_number || 0).toLocaleString()} <span style="color:#94a3b8">(${pct}%)</span></td>
+            <td>${s.contact_number || '—'}</td>
+            <td>${s.area_id || '—'}</td>
+            ${delBtn(`confirmDelete('shelter',${s.shelter_id},'${(s.shelter_name||'').replace(/'/g,"\\'")}' )`)}
+        </tr>`;
+    }).join(''));
+}
+
+function renderDistributions(rows) {
+    setCount('count-distributions', rows.length);
+    if (!rows.length) { setBody('tbl-distributions', `<tr class="empty-row"><td colspan="7">No records</td></tr>`); return; }
+    setBody('tbl-distributions', rows.map(d => `<tr>
+        <td><strong>${d.distribution_id}</strong></td>
+        <td>${d.material_name || '—'}</td>
+        <td>${(d.quantity || 0).toLocaleString()}</td>
+        <td>${fmt(d.distribution_date)}</td>
+        <td>${d.area_id || '—'}</td>
+        <td>${d.admin_id || '—'}</td>
+        ${delBtn(`confirmDelete('distribution',${d.distribution_id},'${(d.material_name||'').replace(/'/g,"\\'")}' )`)}
+    </tr>`).join(''));
+}
+
+// ── Delete helpers ──────────────────────────────────────────────────────────
+
+const ENDPOINT = { disaster: 'disasters', area: 'areas', shelter: 'shelters', distribution: 'distributions' };
+let _pendingDelete = null;
+
+function confirmDelete(type, id, name) {
+    _pendingDelete = { type, id };
+    document.getElementById('confirm-msg').textContent = `Delete "${name}" (ID ${id})? This cannot be undone.`;
+    document.getElementById('confirm-overlay').classList.add('show');
+    document.getElementById('confirm-ok').onclick = executeDelete;
+}
+
+function closeConfirm() {
+    document.getElementById('confirm-overlay').classList.remove('show');
+    _pendingDelete = null;
+}
+
+async function executeDelete() {
+    if (!_pendingDelete) return;
+    const { type, id } = _pendingDelete;
+    closeConfirm();
+    try {
+        const res = await fetch(`${API}/api/${ENDPOINT[type]}/${id}`, { method: 'DELETE' });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            alert(err.error || 'Delete failed');
+            return;
+        }
+        localStorage.setItem('relief_data_updated', Date.now());
+        loadAll();
+    } catch {
+        alert('Could not reach the server.');
+    }
+}
+
+function exportExcel() {
+    const wb = XLSX.utils.book_new();
+
+    const disasterRows = [
+        ['Disaster ID', 'Name', 'Type', 'Start Date', 'Status'],
+        ..._data.disasters.map(d => [
+            `DSR-${String(d.disaster_id).padStart(3,'0')}`,
+            d.disaster_name, d.disaster_type,
+            d.start_date ? new Date(d.start_date).toLocaleDateString('en-GB') : '',
+            d.status
+        ])
+    ];
+
+    const areaRows = [
+        ['Area ID', 'Area Name', 'Severity', 'Population', 'Disaster ID'],
+        ..._data.areas.map(a => [a.area_id, a.area_name, a.severity, a.population, a.disaster_id])
+    ];
+
+    const shelterRows = [
+        ['Shelter ID', 'Name', 'Location', 'Capacity', 'Occupied', 'Contact', 'Area ID'],
+        ..._data.shelters.map(s => [s.shelter_id, s.shelter_name, s.location, s.capacity, s.occupied_number, s.contact_number, s.area_id])
+    ];
+
+    const distRows = [
+        ['Distribution ID', 'Resource', 'Quantity', 'Date', 'Area ID', 'Admin ID'],
+        ..._data.distributions.map(d => [
+            d.distribution_id, d.material_name, d.quantity,
+            d.distribution_date ? new Date(d.distribution_date).toLocaleDateString('en-GB') : '',
+            d.area_id, d.admin_id
+        ])
+    ];
+
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(disasterRows),  'Disasters');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(areaRows),      'Affected Areas');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(shelterRows),   'Shelters');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(distRows),      'Distributions');
+
+    XLSX.writeFile(wb, 'ReliefAtlas_Data.xlsx');
+}
+
+loadAll();
+
+// Auto-refresh when admin adds data from the other tab
+window.addEventListener('storage', e => {
+    if (e.key === 'relief_data_updated') loadAll();
+});
+
+// Also refresh when tab becomes visible again
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) loadAll();
+});
+</script>
+
+</body>
+</html>

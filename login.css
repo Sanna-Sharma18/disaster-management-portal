@@ -1,5 +1,52 @@
 /* login.css */
 
+/* ── Inner Sign In / Sign Up tabs ── */
+.auth-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 24px;
+    gap: 4px;
+}
+
+.auth-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.auth-tab-btn:hover {
+    color: var(--text-main);
+}
+
+.auth-tab-btn.active {
+    color: var(--primary-teal);
+    border-bottom-color: var(--primary-teal);
+}
+
+/* ── Auth views (sign-in / sign-up sub-panels) ── */
+.auth-view {
+    display: none;
+}
+
+.auth-view.active-view {
+    display: block;
+    animation: fadeIn 0.25s ease;
+}
+
+/* ── Role panels ── */
+.role-panel.hidden {
+    display: none;
+}
+
 .login-page {
     height: 100vh;
     overflow: hidden; /* Prevent scrolling if possible */
@@ -249,6 +296,41 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+}
+
+/* Auth message banner */
+.auth-message {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auth-message.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.auth-message.success {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.auth-message.hidden {
+    display: none;
+}
+
+/* Optional label hint */
+.optional {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.8rem;
 }
 
 /* Responsive */

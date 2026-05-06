@@ -29,9 +29,10 @@
                 <li><a href="#shelters">Shelters</a></li>
                 <li><a href="#donations">Donations</a></li>
                 <li><a href="#reports">Reports</a></li>
-                <li><a href="login.html" style="color: var(--text-light);"><i class="ph ph-sign-out"></i> Sign Out</a></li>
+                <li id="nav-user-info" style="color: var(--text-light); font-weight: 500; display: flex; align-items: center; gap: 6px;"><i class="ph ph-user-circle"></i><span id="nav-username"></span></li>
+                <li><a href="#" onclick="logout(); return false;" style="color: var(--text-light);"><i class="ph ph-sign-out"></i> Sign Out</a></li>
             </ul>
-            <a href="#" class="btn-primary">Contribute <i class="ph ph-arrow-up-right"></i></a>
+            <a href="#" onclick="openDonateModal(); return false;" class="btn-primary">Contribute <i class="ph ph-arrow-up-right"></i></a>
         </nav>
 
         <div class="hero-content">
@@ -46,20 +47,20 @@
     <!-- STATS BAR -->
     <section class="stats-bar">
         <div class="stat-card">
-            <h2>4</h2>
-            <p>8 tracked total</p>
+            <h2 id="stat-disasters">—</h2>
+            <p>Active disasters</p>
         </div>
         <div class="stat-card">
-            <h2>616k</h2>
-            <p>Across 6 regions</p>
+            <h2 id="stat-population">—</h2>
+            <p>People affected</p>
         </div>
         <div class="stat-card">
-            <h2>86%</h2>
-            <p>4,528 of 5,250 beds</p>
+            <h2 id="stat-occupancy">—</h2>
+            <p>Shelter occupancy</p>
         </div>
         <div class="stat-card">
-            <h2>6</h2>
-            <p>5 relief drops dispatched</p>
+            <h2 id="stat-shelters">—</h2>
+            <p>Shelters active</p>
         </div>
     </section>
 
@@ -71,7 +72,7 @@
                 <h2>Disaster events</h2>
                 <p>Curated, verified incidents across regions. Filter by hazard type or severity to focus the view.</p>
             </div>
-            <div class="events-count"><strong>8</strong> events shown</div>
+            <div class="events-count"><strong id="events-count">—</strong> events shown</div>
         </div>
 
         <div class="filters">
@@ -97,175 +98,8 @@
             </div>
         </div>
 
-        <div class="grid disaster-grid">
-            <!-- Card 1 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-001</span>
-                        <span class="tag tag-type tag-flood">FLOOD</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-critical"><span class="dot critical"></span> CRITICAL</span>
-                        <span class="tag tag-status status-active">Active</span>
-                    </div>
-                </div>
-                <h3>Monsoon Flooding — Brahmaputra Basin</h3>
-                <p>Sustained rainfall has overwhelmed embankments along the river basin, displacing residents across 14 districts.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Guwahati, Assam</span>
-                    <span><i class="ph ph-users"></i> 1,84,000 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 22 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-002</span>
-                        <span class="tag tag-type tag-fire">FIRE</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
-                        <span class="tag tag-status status-active">Active</span>
-                    </div>
-                </div>
-                <h3>Wildfire — Sierra Nevada Foothills</h3>
-                <p>Dry winds have accelerated fire spread across 38,000 acres. Evacuation orders are in effect for three communities.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Placer County, CA</span>
-                    <span><i class="ph ph-users"></i> 12,400 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 21 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-003</span>
-                        <span class="tag tag-type tag-earthquake">EARTHQUAKE</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
-                        <span class="tag tag-status status-contained">Contained</span>
-                    </div>
-                </div>
-                <h3>M6.4 Earthquake — Aegean Coast</h3>
-                <p>Aftershocks continue to be reported. Search-and-rescue operations have transitioned to recovery and rehousing.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> İzmir, Türkiye</span>
-                    <span><i class="ph ph-users"></i> 56,000 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 19 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-004</span>
-                        <span class="tag tag-type tag-cyclone">CYCLONE</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-critical"><span class="dot critical"></span> CRITICAL</span>
-                        <span class="tag tag-status status-active">Active</span>
-                    </div>
-                </div>
-                <h3>Cyclone Aurelia Landfall</h3>
-                <p>Category 4 cyclone made landfall overnight. Power and communications are down across coastal districts.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Antananarivo, Madagascar</span>
-                    <span><i class="ph ph-users"></i> 92,000 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 23 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 5 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-005</span>
-                        <span class="tag tag-type tag-landslide">LANDSLIDE</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-moderate"><span class="dot moderate"></span> MODERATE</span>
-                        <span class="tag tag-status status-monitoring">Monitoring</span>
-                    </div>
-                </div>
-                <h3>Landslide — Andean Slopes</h3>
-                <p>Saturated hillsides triggered partial slope failure. Geotechnical teams monitoring for further movement.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Medellín, Colombia</span>
-                    <span><i class="ph ph-users"></i> 3,200 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 18 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 6 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-006</span>
-                        <span class="tag tag-type tag-drought">DROUGHT</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-high"><span class="dot high"></span> HIGH</span>
-                        <span class="tag tag-status status-active">Active</span>
-                    </div>
-                </div>
-                <h3>Drought Emergency — Eastern Highlands</h3>
-                <p>Three consecutive failed rainy seasons. Water trucking operations expanding to remote pastoralist communities.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Marsabit, Kenya</span>
-                    <span><i class="ph ph-users"></i> 2,40,000 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 10 Apr 2025</span>
-                </div>
-            </div>
-            
-            <!-- Card 7 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-007</span>
-                        <span class="tag tag-type tag-flood">FLOOD</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-moderate"><span class="dot moderate"></span> MODERATE</span>
-                        <span class="tag tag-status status-contained">Contained</span>
-                    </div>
-                </div>
-                <h3>Urban Flash Flood</h3>
-                <p>Drainage overflow inundated low-lying neighborhoods. Most pumping stations restored to service.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Jakarta, Indonesia</span>
-                    <span><i class="ph ph-users"></i> 15,000 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 17 Apr 2025</span>
-                </div>
-            </div>
-
-            <!-- Card 8 -->
-            <div class="card disaster-card">
-                <div class="card-header">
-                    <div class="tags-left">
-                        <span class="tag tag-id">DSR-008</span>
-                        <span class="tag tag-type tag-fire">FIRE</span>
-                    </div>
-                    <div class="tags-right">
-                        <span class="tag tag-severity tag-low"><span class="dot low"></span> LOW</span>
-                        <span class="tag tag-status status-resolved">Resolved</span>
-                    </div>
-                </div>
-                <h3>Industrial Fire</h3>
-                <p>Warehouse fire contained within 6 hours. Air quality readings have returned to baseline.</p>
-                <div class="card-meta">
-                    <span><i class="ph ph-map-pin"></i> Mumbai, India</span>
-                    <span><i class="ph ph-users"></i> 800 affected</span>
-                    <span><i class="ph ph-calendar-blank"></i> 16 Apr 2025</span>
-                </div>
-            </div>
-
+        <div id="disaster-grid" class="grid disaster-grid">
+            <p class="grid-empty">Loading disasters…</p>
         </div>
     </section>
 
@@ -279,140 +113,8 @@
             </div>
         </div>
 
-        <div class="grid shelter-grid">
-            <!-- Shelter 1 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-full">Full</span>
-                </div>
-                <h3>Guwahati Civic Hall</h3>
-                <p class="location">Guwahati, Assam</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 1,140 / 1,200</span>
-                        <span class="percentage">95%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-red" style="width: 95%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water</span>
-                    <span class="res-tag">Hot meals</span>
-                    <span class="res-tag">Medical</span>
-                    <span class="res-tag">Bedding</span>
-                </div>
-            </div>
-
-            <!-- Shelter 2 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-open">Open</span>
-                </div>
-                <h3>Roseville Community Gym</h3>
-                <p class="location">Placer County, CA</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 312 / 600</span>
-                        <span class="percentage">52%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-green" style="width: 52%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water</span>
-                    <span class="res-tag">Cots</span>
-                    <span class="res-tag">Pet care</span>
-                </div>
-            </div>
-
-            <!-- Shelter 3 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-open">Open</span>
-                </div>
-                <h3>İzmir Karşıyaka Sports Center</h3>
-                <p class="location">İzmir, Türkiye</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 780 / 900</span>
-                        <span class="percentage">87%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-yellow" style="width: 87%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water</span>
-                    <span class="res-tag">Meals</span>
-                    <span class="res-tag">Medical</span>
-                    <span class="res-tag">Translation</span>
-                </div>
-            </div>
-
-            <!-- Shelter 4 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-full">Full</span>
-                </div>
-                <h3>Antananarivo Stadium Annex</h3>
-                <p class="location">Antananarivo, Madagascar</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 1,800 / 1,800</span>
-                        <span class="percentage">100%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-red" style="width: 100%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water</span>
-                    <span class="res-tag">Meals</span>
-                    <span class="res-tag">Sanitation</span>
-                </div>
-            </div>
-
-            <!-- Shelter 5 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-open">Open</span>
-                </div>
-                <h3>San Javier Parish Hall</h3>
-                <p class="location">Medellín, Colombia</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 86 / 250</span>
-                        <span class="percentage">34%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-green" style="width: 34%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water</span>
-                    <span class="res-tag">Bedding</span>
-                    <span class="res-tag">Childcare</span>
-                </div>
-            </div>
-
-            <!-- Shelter 6 -->
-            <div class="card shelter-card">
-                <div class="card-header">
-                    <div class="icon-circle"><i class="ph ph-house"></i></div>
-                    <span class="tag status-open">Open</span>
-                </div>
-                <h3>Marsabit Mission School</h3>
-                <p class="location">Marsabit, Kenya</p>
-                <div class="occupancy">
-                    <div class="occ-text">
-                        <span><i class="ph ph-users"></i> 410 / 500</span>
-                        <span class="percentage">82%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress fill-yellow" style="width: 82%;"></div></div>
-                </div>
-                <div class="resources">
-                    <span class="res-tag">Water trucking</span>
-                    <span class="res-tag">Nutrition</span>
-                    <span class="res-tag">Medical</span>
-                </div>
-            </div>
+        <div id="shelter-grid" class="grid shelter-grid">
+            <p class="grid-empty">Loading shelters…</p>
         </div>
     </section>
 
@@ -543,6 +245,34 @@
             </div>
         </div>
     </section>
+
+    <!-- Donation Modal -->
+    <div id="donate-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>Make a Contribution</h2>
+                <button onclick="closeDonateModal()" class="modal-close"><i class="ph ph-x"></i></button>
+            </div>
+            <p class="modal-subtitle">Your donation goes directly to active relief operations.</p>
+            <form id="donate-form">
+                <div class="modal-input-group">
+                    <label for="donate-amount">Amount (USD)</label>
+                    <div class="modal-input-icon">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="donate-amount" placeholder="0.00" min="1" step="0.01" required>
+                    </div>
+                </div>
+                <div class="quick-amounts">
+                    <button type="button" onclick="setAmount(10)">$10</button>
+                    <button type="button" onclick="setAmount(50)">$50</button>
+                    <button type="button" onclick="setAmount(100)">$100</button>
+                    <button type="button" onclick="setAmount(500)">$500</button>
+                </div>
+                <div id="donate-msg" class="donate-msg hidden"></div>
+                <button type="submit" id="donate-btn" class="btn-primary w-full-modal">Donate</button>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

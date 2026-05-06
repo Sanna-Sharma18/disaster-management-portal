@@ -28,3 +28,14 @@ ehthumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Go
+backend/vendor/
+backend/go.sum
+
+# Docker
+oracle_data/
+
+# Build output
+backend/server
+backend/server.exe
